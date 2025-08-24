@@ -1,298 +1,598 @@
 /* src/App.css */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f4f7f9;
-  color: #333;
-  margin: 0;
+/* --- 1. 全局样式和颜色定义 (Theme & Globals) --- */
+:root {
+    --bg-color: #F9FAFB; /* 更柔和的浅灰色背景 */
+    --surface-color: #FFFFFF; /* 卡片/表单的白色背景 */
+    --primary-color: #4F46E5; /* 设计图中优雅的靛蓝色 */
+    --primary-hover-color: #4338CA;
+    --dark-surface-color: #1F2937; /* 侧边栏和头部的深色 */
+    --dark-text-color: #E5E7EB; /* 深色背景上的浅色文字 */
+    --text-primary-color: #111827; /* 主要标题/文字颜色 */
+    --text-secondary-color: #6B7280; /* 次要/辅助文字颜色 */
+    --border-color: #E5E7EB; /* 边框和分隔线颜色 */
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --radius-md: 0.5rem; /* 8px */
+    --radius-lg: 0.75rem; /* 12px */
 }
 
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary-color);
+}
+
+/* --- 2. 主应用布局 (App Layout) --- */
 .App {
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .App-header {
-  background-color: #2c3e50;
-  padding: 20px;
-  color: white;
-  margin-bottom: 30px;
-}
-
-main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* Loading and Error States */
-.loading, .error {
-  font-size: 1.2rem;
-  color: #555;
-  padding: 40px;
-}
-.error {
-  color: #e74c3c;
-}
-
-/* PaperList Styles */
-.paper-list-container h2 {
-  color: #34495e;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 10px;
-}
-
-.papers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* PaperCard Styles */
-.paper-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  text-align: left;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-
-.paper-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.paper-card h3 {
-  margin-top: 0;
-  color: #2980b9;
-}
-
-.paper-summary {
-  flex-grow: 1;
-  color: #555;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.paper-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: #7f8c8d;
-  margin-top: 15px;
-  border-top: 1px solid #ecf0f1;
-  padding-top: 10px;
-}
-
-.select-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 15px;
-  transition: background-color 0.2s;
-}
-
-.select-button:hover {
-  background-color: #2980b9;
-}
-
-/* StudentForm Styles */
-.student-form-container {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  text-align: left;
-}
-
-.student-form-container h2 {
-  text-align: center;
-  margin-top: 0;
-  color: #34495e;
-}
-
-.student-input-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-}
-
-.student-input-row span {
-  width: 60px;
-}
-
-.student-input-row input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  flex: 1;
-  min-width: 150px;
-}
-
-.remove-button, .back-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.back-button {
-  background-color: #7f8c8d;
-  margin-bottom: 20px;
-}
-
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #ecf0f1;
-}
-
-.add-button, .send-all-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.add-button {
-  background-color: #2ecc71;
-  color: white;
-}
-
-.send-all-button {
-  background-color: #3498db;
-  color: white;
-}
-.send-all-button:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-}
-
-.status-message {
-    margin-left: 10px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-}
-.status-message:containing("✅") {
-    color: #27ae60;
-}
-.status-message:containing("❌") {
-    color: #c0392b;
-}
-
-/* src/App.css */
-
-/* ================================================= */
-/* === 新的试卷卡片样式 (New Paper Card Styles) === */
-/* ================================================= */
-
-.paper-card-new {
-    background-color: #ffffff;
-    border: 1px solid #e9e9e9;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    background-color: var(--surface-color); /* 标题栏改为白色，与内容区一致 */
+    color: var(--text-primary-color);
+    padding: 1rem 2rem;
+    flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    text-align: left;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    overflow: hidden; /* 确保子元素不会超出圆角 */
-}
-.paper-card-new:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-    transform: translateY(-4px);
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 10;
 }
 
-/* --- 卡片上半部分 --- */
-.paper-card-new .card-header {
-    padding: 20px;
-}
-.paper-card-new .card-header h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.15rem; /* 调整标题大小 */
-    color: #333;
+.App-header h1 {
+    font-size: 1.25rem;
+    margin: 0;
     font-weight: 600;
 }
-.paper-card-new .time-range {
-    font-size: 0.9rem;
-    color: #888;
-    margin: 0 0 12px 0;
-}
-.paper-card-new .status-tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px; /* 胶囊形状 */
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-.paper-card-new .status-tag.in-progress {
-    background-color: #e8f5e9; /* 浅绿色背景 */
-    color: #43a047; /* 绿色文字 */
-}
-.paper-card-new .status-tag.finished {
-    background-color: #f5f5f5; /* 灰色背景 */
-    color: #9e9e9e; /* 灰色文字 */
-}
 
-
-/* --- 分隔线 --- */
-.paper-card-new .separator {
-    border-top: 1px dotted #e0e0e0;
-    margin: 0 20px; /* 左右留出边距 */
-}
-
-
-/* --- 卡片统计数据 --- */
-.paper-card-new .card-stats {
+.app-layout {
     display: flex;
-    justify-content: space-around;
-    padding: 20px 10px; /* 上下padding多一些 */
-    text-align: center;
+    flex-grow: 1;
+    overflow: hidden;
 }
-.paper-card-new .stat-item {
+
+.main-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 2.5rem; /* 增加内容区的内边距 */
+}
+
+.page-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.page-container h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0 0 2rem 0;
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary-color);
+}
+
+/* --- 3. 侧边导航栏 (Sidebar) --- */
+.sidebar {
+    width: 240px;
+    background-color: var(--dark-surface-color);
+    flex-shrink: 0;
+    padding: 1.5rem 0;
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li a {
+    display: flex;
+    align-items: center;
+    color: var(--dark-text-color);
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    margin: 0.25rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    border-left: 3px solid transparent; /* 为激活状态预留边框位置 */
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #374151;
+}
+
+.sidebar nav ul li a.active {
+    background-color: #374151; /* 激活时背景色变化 */
+    color: white;
+    border-left: 3px solid var(--primary-color); /* 激活时左侧有高亮边框 */
+}
+
+/* --- 4. 表格样式 (Table) --- */
+.table-container {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    color: var(--text-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: var(--bg-color); /* 表头使用浅灰色背景 */
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: var(--bg-color);
+}
+
+/* --- 5. 分页控件 (Pagination) --- */
+.pagination-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    gap: 1rem;
+    color: var(--text-secondary-color);
+}
+
+.pagination-controls button {
+    background-color: var(--surface-color);
+    color: var(--text-secondary-color);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.pagination-controls button:hover:not(:disabled) {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+.pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- 6. 卡片和表单样式 (Cards & Forms) --- */
+/* --- 6. 卡片和表单样式 (Cards & Forms) --- */
+
+/* 试卷列表页：外部容器恢复为透明，不再是卡片 */
+.paper-list-container {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* 试卷列表页：恢复内部的网格布局 */
+.papers-grid {
+    display: grid;
+    /* 创建响应式列：每列最小320px，自动填充可用空间 */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem; /* 卡片之间的间距 */
+}
+
+/* 独立的试卷卡片样式 */
+.paper-card-new {
+    background-color: var(--surface-color); /* 卡片自身有白色背景 */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.2s;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-width: 60px; /* 保证每个item有最小宽度 */
 }
-.paper-card-new .stat-item .count {
-    font-size: 1.6rem;
-    font-weight: 500;
-    color: #333;
-    line-height: 1.2;
+.paper-card-new:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
 }
-.paper-card-new .stat-item .label {
-    font-size: 0.75rem;
-    color: #999;
-    margin-top: 4px;
+/* 试卷卡片内部元素的样式（我们之前定义过，这里保持不变）*/
+.paper-card-new .card-header { padding: 20px; }
+.paper-card-new .card-header h3 { margin: 0 0 8px 0; font-size: 1.15rem; font-weight: 600; }
+.paper-card-new .time-range { font-size: 0.9rem; color: var(--text-secondary-color); margin: 0 0 12px 0; }
+.paper-card-new .status-tag { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 500; }
+.paper-card-new .status-tag.in-progress { background-color: #D1FAE5; color: #065F46; }
+.paper-card-new .separator { border-top: 1px dotted var(--border-color); margin: 0 20px; }
+.paper-card-new .card-stats { display: flex; justify-content: space-around; padding: 20px 10px; text-align: center; }
+.paper-card-new .stat-item { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+.paper-card-new .stat-item .count { font-size: 1.6rem; font-weight: 500; line-height: 1.2; }
+.paper-card-new .stat-item .count:last-child { font-size: 1.2rem; font-weight: normal; }
+.paper-card-new .stat-item .label { font-size: 0.75rem; color: var(--text-secondary-color); margin-top: 4px; }
+.paper-card-new .select-button { margin: 0 20px 20px 20px; font-size: 0.95rem; padding: 12px; }
+
+
+/* 学生信息表单页：保持独立的卡片样式 */
+.student-form-container {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    padding: 2.5rem;
 }
-/* 特别为 "分钟" 文本调整样式，使其更和谐 */
-.paper-card-new .stat-item .count:last-child {
-    font-size: 1.2rem;
-    font-weight: normal;
+.form-actions {
+    /* 1. 必须声明为 flex 容器，这是所有对齐属性生效的前提 */
+    display: flex !important;
+
+    /* 2. 控制其内部元素向左对齐 */
+    justify-content: right  !important;
+
+    /* 3. 元素之间的间距 */
+    gap: 1rem !important;
+    
+    /* 4. 其他相关的布局样式 */
+    margin-top: 1.5rem !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid var(--border-color) !important;
 }
 
-/* --- 选择按钮样式微调 --- */
-.paper-card-new .select-button {
-    margin: 0 20px 20px 20px; /* 与其他内容边距对齐 */
-    background-color: #3498db;
-    font-size: 0.95rem;
-    padding: 12px;
+/* 修正2：为“返回选择试卷”按钮添加足够的下边距 */
+.back-button {
+    margin-bottom: 2rem !important; /* 使用 !important 确保最高优先级 */
+    align-self: flex-start;
 }
-.paper-card-new .select-button:hover {
-    background-color: #2980b9;
+
+
+/* 学生信息行 (保持我们之前最终优化的版本) */
+.student-input-row {
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.student-input-row > span:first-of-type {
+    flex: 0 0 60px;
+    font-weight: 500;
+    color: #555;
+}
+.student-input-row input {
+    flex: 1 1 150px;
+    min-width: 120px; 
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+}
+.student-input-row input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+.student-input-row .remove-button,
+.student-input-row .status-message {
+    flex-shrink: 0;
+}
+
+/* --- 7. 按钮通用样式 (Buttons) --- */
+.select-button, .add-button, .send-all-button, .back-button, .remove-button, .logout-button {
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.select-button, .send-all-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+.select-button:hover, .send-all-button:hover {
+    background-color: var(--primary-hover-color);
+}
+.send-all-button:disabled {
+    background-color: #9CA3AF;
+    cursor: not-allowed;
+}
+
+.add-button { background-color: #10B981; color: white; }
+.add-button:hover { background-color: #059669; }
+
+.back-button, .remove-button {
+    background-color: var(--surface-color);
+    color: var(--text-secondary-color);
+    border: 1px solid var(--border-color);
+}
+.back-button:hover, .remove-button:hover {
+    background-color: var(--bg-color);
+}
+
+.logout-button {
+    background-color: var(--dark-surface-color);
+    color: var(--dark-text-color);
+    padding: 8px 16px;
+}
+.logout-button:hover {
+    background-color: #374151;
+}
+
+/* --- 8. 状态提示 (Status Message) --- */
+.status-message {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    flex-shrink: 0;
+}
+.status-message.status-success { background-color: #D1FAE5; color: #065F46; }
+.status-message.status-error { background-color: #FEE2E2; color: #991B1B; }
+.status-message.status-warning { background-color: #FEF3C7; color: #92400E; }
+.status-message.status-info { background-color: #DBEAFE; color: #1E40AF; }
+
+/* --- 9. 全新登录页样式 (New Login Page) --- */
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e7eb; /* 浅灰色背景 */
+}
+
+.login-form {
+    background: #f3f4f6; /* 稍深的灰色卡片 */
+    padding: 2.5rem;
+    padding-top: 5rem; /* 为顶部的头像图标留出空间 */
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    position: relative; /* 用于定位头像 */
+}
+
+.login-avatar-container {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #9ca3af; /* 头像背景色 */
+    padding: 15px;
+    box-sizing: border-box;
+    position: absolute;
+    top: -45px; /* 将头像向上移动一半，实现重叠效果 */
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid #f3f4f6; /* 与卡片同色的边框，制造凹陷感 */
+}
+
+.login-form h2 {
+    color: var(--text-secondary-color);
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    color: #ef4444;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: var(--text-secondary-color);
+    pointer-events: none; /* 让鼠标可以点击穿透图标 */
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 3rem; /* 左侧留出图标空间 */
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--text-primary-color);
+    transition: all 0.2s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary-color);
+    margin-bottom: 1.5rem;
+}
+
+.login-options label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.login-options input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+.forgot-password {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.login-form button:hover:not(:disabled) {
+    background-color: var(--primary-hover-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.login-form button:disabled {
+    background-color: #9CA3AF;
+    cursor: not-allowed;
+}
+
+
+/* --- 10. 通用弹窗/模态框样式 (Modal) --- */
+
+.modal-overlay {
+    position: fixed; /* 固定定位，覆盖整个屏幕 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(17, 24, 39, 0.6); /* 半透明黑色背景遮罩 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* 确保在最上层 */
+    backdrop-filter: blur(4px); /* (可选) 毛玻璃效果 */
+}
+
+.modal-content {
+    background: var(--surface-color);
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    
+    /* 实现一个优雅的滑入动画 */
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content p {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary-color);
+    line-height: 1.6;
+}
+
+.modal-close-button {
+    /* 复用我们已有的按钮样式 */
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-close-button:hover {
+    background-color: var(--primary-hover-color);
+}
+
+
+/* --- 11. 招聘状态框样式 (Status Badge) --- */
+
+/* 状态框的基础样式：定义形状、字体、边距等 */
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px; /* 上下5px, 左右12px的内边距 */
+    border-radius: 14px; /* 圆润的胶囊形状 */
+    font-size: 0.8rem;
+    font-weight: 600; /* 字体稍粗一些 */
+    color: #fff; /* 所有状态框的文字都用白色 */
+    white-space: nowrap; /* 确保文字不换行 */
+    line-height: 1.2;
+}
+
+/* 各种颜色状态的定义 */
+.status-badge.status-blue {
+    background-color: #3498db;
+}
+
+.status-badge.status-green {
+    background-color: #2ecc71;
+}
+
+.status-badge.status-orange {
+    background-color: #f39c12;
+}
+
+.status-badge.status-red {
+    background-color: #e74c3c;
+}
+
+.status-badge.status-purple {
+    background-color: #8e44ad;
+}
+
+.status-badge.status-dark-green {
+    background-color: #16a085;
+}
+
+.status-badge.status-grey {
+    background-color: #95a5a6; /* 用于未知状态的灰色 */
 }
