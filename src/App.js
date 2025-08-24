@@ -1,85 +1,77 @@
 // src/App.js
-
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import PMOStudentsPage from './pages/PMOStudentsPage'; // 引入新页面
+import RegisterPage from './pages/RegisterPage'; // 引入新页面
 
 // --- 组件和页面导入 ---
 import LoginPage from './components/LoginPage.js';
 import Layout from './components/Layout.js';
-import DashboardPage from './pages/DashboardPage';
+import RoleBasedGuard from './components/RoleBasedGuard';
+import VendorDashboard from './pages/VendorDashboard';
+import PMODashboard from './pages/PMODashboard';
 import ExamSenderPage from './pages/ExamSenderPage';
+import CandidatesPage from './pages/CandidatesPage'; // 重新引入
+import UnauthorizedPage from './pages/UnauthorizedPage';
 import './App.css';
 
-/**
- * 一个“受保护的路由”组件
- * - 如果用户已登录 (有token), 它会渲染其子路由 (<Outlet />)
- * - 如果用户未登录 (没有token), 它会导航到 /login 页面
- */
+
 const ProtectedRoutes = ({ token }) => {
     return token ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-/**
- * 主要的应用逻辑组件
- */
-function AppLogic() {
-    const [token, setToken] = useState(localStorage.getItem('jwt_token'));
-    const navigate = useNavigate();
-    
-    // handleLoginSuccess 和 handleLogout 现在由 AppLogic 管理
-    const handleLoginSuccess = (jwt) => {
-        localStorage.setItem('jwt_token', jwt);
-        setToken(jwt);
-        navigate('/dashboard');
-    };
+const HomeRedirect = () => {
+    const { user } = useAuth();
+    if (user?.role === 'PMO') return <Navigate to="/hr/dashboard" replace />;
+    if (user?.role === 'VENDOR') return <Navigate to="/vendor/dashboard" replace />;
+    return <Navigate to="/login" replace />;
+};
 
-    const handleLogout = () => {
-        localStorage.removeItem('jwt_token');
-        setToken(null);
-        // navigate('/login') 会在 ProtectedRoutes 组件中自动处理
-    };
+function AppRoutes() {
+    const { user, logout } = useAuth();
 
     return (
         <div className="App">
             <header className="App-header">
                 <h1>招聘管理系统</h1>
-                {token && <button onClick={handleLogout} className="logout-button">退出登录</button>}
+                {user && <button onClick={logout} className="logout-button">退出登录</button>}
             </header>
             <Routes>
-                {/* 1. 公共路由：登录页 */}
-                {/* 如果用户已登录，访问/login会自动跳转到dashboard */}
-                <Route path="/login" element={
-                    !token ? <LoginPage onLoginSuccess={handleLoginSuccess} /> : <Navigate to="/dashboard" replace />
-                } />
-                
-                {/* 2. 受保护的路由组 */}
-                <Route element={<ProtectedRoutes token={token} />}>
-                    {/* 所有需要登录的页面都放在这里，并由 <Layout> 包裹 */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+                <Route element={<RoleBasedGuard allowedRoles={['PMO']} />}>
                     <Route element={<Layout />}>
-                        <Route path="/dashboard" element={<DashboardPage />} />
-                        <Route path="/send-exam" element={<ExamSenderPage />} />
-                        
-                        {/* 默认路径重定向到 dashboard */}
-                        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/hr/dashboard" element={<PMODashboard />} />
+                        <Route path="/hr/students" element={<PMOStudentsPage />} />
                     </Route>
                 </Route>
+                
+                <Route element={<RoleBasedGuard allowedRoles={['VENDOR']} />}>
+                     <Route element={<Layout />}>
+                        <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+                        {/* *** 新增：恢复候选人管理路由 *** */}
+                        <Route path="/vendor/candidates" element={<CandidatesPage />} /> 
+                        <Route path="/vendor/send-exam" element={<ExamSenderPage />} />
+                     
+                     </Route>
+                </Route>
 
-                {/* 3. (可选) 添加一个404 "未找到" 页面 */}
-                <Route path="*" element={<div><h2>404: Page Not Found</h2><p>请检查URL或返回Dashboard。</p></div>} />
+                <Route path="/" element={<HomeRedirect />} />
+                <Route path="*" element={<h2>404: Page Not Found</h2>} />
             </Routes>
         </div>
     );
 }
 
-
-/**
- * 根组件，负责提供 BrowserRouter 上下文
- * 这是程序的总入口
- */
 function App() {
     return (
         <BrowserRouter>
-            <AppLogic />
+            <AuthProvider>
+                <AppRoutes />
+            </AuthProvider>
         </BrowserRouter>
     );
 }

@@ -1,4 +1,3 @@
-// src/pages/DashboardPage.js
 import React, { useState, useEffect } from 'react';
 import { 
     fetchAccountBalance,
@@ -6,9 +5,9 @@ import {
     fetchProgressingCount,
     fetchUserInfo
 } from '../services/api';
-import CandidatesTable from '../components/CandidatesTable'; // 引入新的表格组件
+import CandidatesTable from '../components/CandidatesTable'; // 引入表格组件
 
-// 辅助函数：格式化时间戳 (毫秒)
+// (辅助函数保持不变)
 const formatTimestamp = (timestamp) => {
     if (!timestamp) return 'N/A';
     return new Date(timestamp).toLocaleDateString();
@@ -22,14 +21,13 @@ const DashboardPage = () => {
 
     useEffect(() => {
         const loadStats = async () => {
+            // (数据加载逻辑保持不变)
             const results = await Promise.allSettled([
                 fetchAccountBalance(),
                 fetchUntestedCount(),
                 fetchProgressingCount(),
                 fetchUserInfo()
             ]);
-
-            // (这部分逻辑保持不变)
             if (results[0].status === 'fulfilled') setStats(prev => ({ ...prev, balance: results[0].value?.money }));
             if (results[1].status === 'fulfilled') setStats(prev => ({ ...prev, untested: results[1].value }));
             if (results[2].status === 'fulfilled') setStats(prev => ({ ...prev, progressing: results[2].value }));
@@ -55,7 +53,7 @@ const DashboardPage = () => {
                 <UserInfoCard userInfo={userInfo} isLoading={loading} />
             </div>
 
-            {/* 直接渲染独立的候选人表格组件 */}
+            {/* 直接渲染概览模式的表格 (isDetailsPage 默认为 false) */}
             <CandidatesTable />
         </div>
     );

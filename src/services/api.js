@@ -139,3 +139,32 @@ export const fetchProgressingCount = () => {
 export const fetchUserInfo = () => {
     return enhancedFetch('/account/userInfo'); 
 };
+
+/**
+ * 注册一个新用户
+ * @param {object} userData - 包含 username, password, apiKey, token, company, role 的对象
+ * @returns {Promise<object>} 成功或失败的响应
+ */
+export const registerUser = async (userData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            // 后端会在 400/409 等情况下返回包含 message 的 JSON
+            throw new Error(result.message || `HTTP error ${response.status}`);
+        }
+
+        return result; // 返回成功信息，例如 { success: true, message: "..." }
+    } catch (error) {
+        console.error("Error during registration:", error);
+        throw error; // 将错误抛出给组件处理
+    }
+};

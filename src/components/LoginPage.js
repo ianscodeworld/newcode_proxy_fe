@@ -1,6 +1,7 @@
 // src/components/LoginPage.js
 
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext'; // 引入 useAuth
 import { loginUser } from '../services/api';
 
 // --- 图标组件 (保持不变) ---
@@ -10,6 +11,7 @@ const LockIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24
 
 
 const LoginPage = ({ onLoginSuccess }) => {
+    const { login } = useAuth(); // 从Context获取login函数
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -20,27 +22,32 @@ const LoginPage = ({ onLoginSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // ... (handleSubmit 的逻辑保持不变)
-        if (!username || !password) {
-            setError('用户名和密码不能为空');
-            return;
-        }
         setLoading(true);
         setError('');
         try {
+            // 第一步：调用API获取token，这里的错误依然用try...catch捕获
             const data = await loginUser({ username, password });
+            
             if (data.jwt) {
-                onLoginSuccess(data.jwt);
+                // 第二步：处理token，并检查返回值
+                const loginLogicError = login(data.jwt);
+                
+                // *** 核心修改：检查 loginAction 是否返回了错误信息 ***
+                if (loginLogicError) {
+                    // 如果有错误信息，就把它显示在UI上
+                    setError(loginLogicError);
+                }
+                // 如果没有错误信息 (返回null)，则表示成功，页面会自动跳转
             } else {
-                setError('登录失败：未收到Token');
+                setError('Login failed: Token not received.');
             }
-        } catch (err) {
-            setError(err.message || '登录时发生未知错误');
+        } catch (apiError) {
+            // 这个 catch 现在只处理 loginUser API 调用本身的失败
+            setError(apiError.message || 'An unknown error occurred during login.');
         } finally {
             setLoading(false);
         }
     };
-
     // *** 新增: 处理"忘记密码"链接点击事件的函数 ***
     const handleForgotPasswordClick = (e) => {
         e.preventDefault(); // 阻止链接的默认跳转行为
@@ -54,7 +61,8 @@ const LoginPage = ({ onLoginSuccess }) => {
                     <div className="login-avatar-container"><UserAvatarIcon /></div>
                     <h2>LOGIN</h2>
                     {error && <p className="error-message">{error}</p>}
-
+                    {/* *** 新增：临时角色选择器 *** */}
+   
                     <div className="input-wrapper">
                         <span className="input-icon"><UserIcon /></span>
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" disabled={loading} />
